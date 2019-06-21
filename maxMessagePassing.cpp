@@ -19,24 +19,6 @@ vector<vector<double> > ocrFactor(1000,vector<double>(10)); // 1 vector of size 
 vector<vector<double> > transFactor(10,vector<double>(10)); // 10*10 table for each occurrence possibility
 map<char,int> mapping;
 
-/*
-vector<double> tempMsg;
-vector<int> tempScope;
-
-vector<vector<double> > upMsg(20);
-vector<vector<int> > scopeOfUpMsg(20);
-vector<vector<double> > beliefOfCliqueNodes(20);
-vector<vector<int> > maxUpMsg(20);
-*/
-
-// is there a need of 2 way message passing in MAP inference
-
-/*
-
-vector<int> upNbr(20,-1);
-vector<vector<int> > downNbr(20);
-*/
-
 class node{
 
 public:
@@ -53,15 +35,6 @@ public:
 	
 
 };
-
-/*
-
-map<int, class node *> cliques;
-vector<vector<int> > scopeOfNewFactor;
-vector<int> visitedNewFactor;
-vector<int> sourceNewFactor;
-int cliqueAdjacency[100][100];
-*/
 
 
 int correctWord = 0;
@@ -161,9 +134,6 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 			tempFactor[l] += mapping1[tempString];
 			
 		}
-		
-
-		
 
 	}
 
@@ -201,18 +171,11 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 		for(int j=start;j<start+newTableSize;j++){
 
 			temp += exp(tempFactor[j]);
-
-
 		}
 
 		values[index].push_back(temp);
 
 	}
-	
-
-
-
-
 
 
 }
@@ -336,9 +299,7 @@ int main(){
 			c  = strtok(NULL,"\t");
 			
 		}
-
-		
-		
+	
 	}
 	
 	
@@ -346,17 +307,12 @@ int main(){
 
 	int characterCounter = 0;
 
-
-
 	while(!file.eof()){
 
 		 n1  = 0, n2  = 0;
 
 		ccounter++;
 		cout<<ccounter<<"\n";
-
-
-
 
 		map<int, class node *> cliques;
 		vector<vector<int> > scopeOfNewFactor;
@@ -397,10 +353,6 @@ int main(){
 			
 		}
 
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
 		getline(file,temp);
 		
 		if(temp[0]=='\0')
@@ -419,9 +371,7 @@ int main(){
 			
 
 		}
-		//cout<<"here\n";
-
-
+	
 		for(int i=0;i<totalVar;i++)
 			transAdded[i] = 0;
 
@@ -518,21 +468,7 @@ int main(){
 				}
 			}
 		}
-	
-		//*
-		/*
-		cout<<"Adjacency Matrix : \n";
 
-		for(int i=0;i<totalVar;i++){
-			for(int j=0;j<totalVar;j++){
-
-				cout<<adjacency[i][j]<<" ";
-			}
-			cout<<"\n";
-		}
-
-		cout<<"END\n\n";
-		//*/
 		
 		for(int i=0;i<totalVar;i++)
 			for(int j=0;j<totalVar;j++)
@@ -586,14 +522,6 @@ int main(){
 			v[index] = 1;
 			countOfElimination++;
 		}
-		/*
-		
-		for(int i=0;i<totalVar;i++){
-			cout<<ordering[i]<<" ";
-		}
-		cout<<"\n";
-		*/
-		//*/
 
 				
 		for(int j=0;j<totalVar;j++){
@@ -639,14 +567,9 @@ int main(){
 			*/
 			// check for factors which are created newly
 			newFSize = scopeOfNewFactor.size();
-			//cout<<newFSize<<" "<<i<<"\n";
 			for(int k=0;k<newFSize;k++){
 
 				int ll = scopeOfNewFactor[k].size();
-				/*for(int ll1 = 0;ll1<ll;ll1++)
-					cout<<scopeOfNewFactor[k][ll1]<<" ";
-				cout<<"\n";
-				*/
 				if(visitedNewFactor[k]==0){
 
 					if(find(scopeOfNewFactor[k].begin(),scopeOfNewFactor[k].end(),ordering[i])!=scopeOfNewFactor[k].end()){
@@ -666,7 +589,6 @@ int main(){
 					}
 				}
 			}
-
 
 			pSize = p.size();
 
@@ -732,18 +654,13 @@ int main(){
 				}
 
 			}
-			//cout<<fSize<<"\n";
+			
 			// updating OCR potentials, it's always on first column of index
 			for(int k=0;k<fSize;k++){
-				//cout<<ocrFactor[imageId][temp3->factorIndex[k][0]]<<"\n";
-				temp3->factor.push_back(ocrFactor[imageId][temp3->factorIndex[k][0]]);
 				
-
-
+				temp3->factor.push_back(ocrFactor[imageId][temp3->factorIndex[k][0]]);
 			}
 			
-			
-
 			// updating transFactor
 
 			
@@ -790,19 +707,12 @@ int main(){
 					if(tempTrans != -1){
 						for(int k=0;k<fSize;k++){
 							temp3->factor[k] += transFactor[temp3->factorIndex[k][tempTrans]][temp3->factorIndex[k][0]];
-							//cout<<temp3->factor[k]<<" "<<temp3->factorIndex[k][tempTrans]<<" "<<temp3->factorIndex[k][0]<<" "<<transFactor[temp3->factorIndex[k][tempTrans]][temp3->factorIndex[k][0]]<<"\n";
 
 						}
 					}
 				}
 			}
 
-					
-				//exit(0);
-
-			
-			
-			//cout<<"hhhh\n";
 			// updating skip factor and word-skip
 
 			if(ordering[i]<n1){
@@ -837,8 +747,6 @@ int main(){
 							}
 
 						}
-
-
 					}
 				}
 
@@ -879,7 +787,6 @@ int main(){
 
 					}
 				}
-
 
 			}else{
 
@@ -953,20 +860,10 @@ int main(){
 
 							}
 
-
 						}
-
 
 					}
 				}
-
-
-
-			
-
-
-
-
 
 
 			}
@@ -974,37 +871,7 @@ int main(){
 			
 			cliques[i] = temp3;
 			
-		}		/*
-
-		if(ccounter==2){
-		
-		for(int i=0;i<totalVar;i++){
-
-			class node *tempNode = cliques[i];
-
-			// print scope 
-
-			int scopeSize = tempNode->scope.size();
-
-			for(int i=0;i<scopeSize;i++)
-				cout<<tempNode->scope[i]<<"   ";
-
-			cout<<"\n\n";
-
-			// print factor
-			int sizeFactor = tempNode->factor.size();
-
-			for(int i=0;i<sizeFactor;i++){
-				cout<<tempNode->factor[i]<<"    ";
-			}
-			cout<<"\n\n\n\n\n\n";
-
-		}
-
-
-		exit(0);
-	}	
-		*/
+		}		
 			if(modelNum == 1){
 
 				int assignment[totalVar];
@@ -1049,14 +916,9 @@ int main(){
 						num /=z;
 						DLL += log(num);
 
-
-
 					}
 
 					assignment[ordering[i]] = maxIndex;
-
-					
-
 
 				}
 
@@ -1082,20 +944,13 @@ int main(){
 				if((characterCounter - prevcharCount) == n2)
 					correctWord++;
 
-
-				
-
-
 			}else if(modelNum ==2 || modelNum == 3){
 
 
 
 
 				int root = n1 - 1;
-				//vector<int> upNbr(totalVar,-1);
-				//vector<vector<int> > downNbr(totalVar);
 				totalVar = n1;
-
 
 				for(int j=0;j<totalVar;j++)
 				upNbr.push_back(-1);
@@ -1131,9 +986,7 @@ int main(){
 
 
 			}
-			
-
-
+	
 			q.push(root);
 			
 			for(int i=0;i<totalVar;i++)
@@ -1157,15 +1010,9 @@ int main(){
 				}
 
 			}
-			
-			
-			
 
 			// two-way message passing
 			// upward pass
-
-			
-			
 
 			vector<int> countUpMsg(totalVar,0);
 
@@ -1189,10 +1036,7 @@ int main(){
 						vUp[i] = 1;
 						int j = upNbr[i];
 						countUpMsg[j]++;
-						
-
-
-						
+					
 						up_MSG(i, downNbr[i], cliques, tempScope, scopeOfUpMsg, tempMsg, maxUpMsg, upMsg, values);
 						//cout<<"here3\n";
 						upMsg[i] = tempMsg;
@@ -1225,7 +1069,6 @@ int main(){
 					finalTable[j] += upMsg[downNbr[totalVar-1][i]][j];
 					//cout<<finalTable[j]<<" ";
 				}
-				//cout<<"\n";
 
 
 			}
@@ -1273,11 +1116,6 @@ int main(){
 			num /=z;
 
 			DLL += log(num);
-
-
-
-			//cout<<"\nAssignment :"<<maxIndex <<"\n";
-
 			
 			// assignment to element eliminated in last
 			assignment[totalVar-1] = maxIndex;
@@ -1344,10 +1182,6 @@ int main(){
 
 					}
 
-
-
-
-
 				}
 
 
@@ -1387,8 +1221,6 @@ int main(){
 					if(a3[ordering[i]] == assignment[i])
 						characterCounter++;
 					totalChar++;
-
-
 				}
 			}
 
@@ -1496,20 +1328,7 @@ int main(){
 				}
 			}
 		}
-		//*
-		/*
-		cout<<"Adjacency Matrix : \n";
-
-		for(int i=0;i<totalVar;i++){
-			for(int j=0;j<totalVar;j++){
-
-				cout<<adjacency[i][j]<<" ";
-			}
-			cout<<"\n";
-		}
-
-		cout<<"END\n\n";
-		//*/
+		
 		
 		for(int i=0;i<totalVar;i++)
 			for(int j=0;j<totalVar;j++)
@@ -1601,12 +1420,7 @@ int main(){
 					p.push_back(j);
 
 			}
-			/*
-			for(int l=0;l<p.size();l++){
-				cout<<p[l]<<" ";
-			}
-			cout<<"\n";
-			*/
+			
 			// check for factors which are created newly
 			newFSize = scopeOfNewFactor.size();
 			//cout<<newFSize<<" "<<i<<"\n";
@@ -1629,8 +1443,6 @@ int main(){
 						}
 
 						visitedNewFactor[k] = 1;	// removing that factor
-						//cout<<"ADD Edge :\n";
-						//cout<<i<<" "<<sourceNewFactor[k]<<" "<<k<<"\n";
 						cliqueAdjacency[i][sourceNewFactor[k]] = 1;	// adding edges in clique tree
 						cliqueAdjacency[sourceNewFactor[k]][i] = 1;
 					}
@@ -1693,23 +1505,15 @@ int main(){
 				}
 
 			}
-			//cout<<fSize<<"\n";
+			
 			// updating OCR potentials, it's always on first column of index
 			for(int k=0;k<fSize;k++){
-				//cout<<ocrFactor[imageId][temp3->factorIndex[k][0]]<<"\n";
 				temp3->factor.push_back(ocrFactor[imageId][temp3->factorIndex[k][0]]);
-				//cout<<imageId<<" "<<temp3->factorIndex[k][0]<<" "<<exp(ocrFactor[imageId][temp3->factorIndex[k][0]])<<"\n";
-				
-
-
+			
 			}
 			
-
-
 			// updating transFactor
 
-			
-			//cout<<"here2 "<<i<<"\n";
 			if(modelNum!=1){
 			
 				int tempTrans = -1;
@@ -1728,12 +1532,10 @@ int main(){
 					if(tempTrans != -1){
 						for(int k=0;k<fSize;k++){
 							temp3->factor[k] += transFactor[temp3->factorIndex[k][0]][temp3->factorIndex[k][tempTrans]];
-							//cout<<temp3->factor[k]<<" "<<temp3->factorIndex[k][0]<<" "<<temp3->factorIndex[k][tempTrans]<<"\n";
 
 						}
 					}
 				}
-				
 				
 				tempTrans = -1;
 				if(ordering[i]!=0 && ordering[i]!=n1 && vEliminated[ordering[i]-1]==0){
@@ -1759,16 +1561,7 @@ int main(){
 				}
 			}
 
-					
-				//exit(0);
-
-			
-			
-			//cout<<"hhhh\n";
 			// updating skip factor and word-skip
-
-			
-
 				// updating skip
 				int tempImg1 = a2[ordering[i]];
 
@@ -1797,10 +1590,7 @@ int main(){
 
 								}
 							}
-
 						}
-
-
 					}
 				}
 
@@ -1832,24 +1622,14 @@ int main(){
 									temp3->factor[l] += log(1);
 
 								}
-
 							}
-
-
 						}
-
-
 					}
 				}
-
-
-			
-
 			
 			cliques[i] = temp3;
 			
 		}
-
 
 		totalVar = n2;
 
@@ -1867,10 +1647,7 @@ int main(){
 			q.push(root);
 
 			vEle[totalVar-1] = 1;
-			
-			
-			
-			
+					
 			while(!q.empty()){
 
 				int tempRoot = q.front();
@@ -1886,20 +1663,13 @@ int main(){
 						q.push(j);
 					}
 				}
-
-
 			}
-			
-
-
+		
 			q.push(root);
 			
 			for(int i=0;i<totalVar;i++)
 				vEle[i] = 0;
 			vEle[root] = 1;
-
-			
-
 			while(!q.empty()){
 
 				int tempRoot = q.front();
@@ -1915,57 +1685,34 @@ int main(){
 				}
 
 			}
-			
-			
-			
-
+		
 			// two-way message passing
 			// upward pass
-
-			
-			
-
 			vector<int> countUpMsg(totalVar,0);
 
 			int downNbrRoot = downNbr[totalVar-1].size();
 			int vUp[totalVar];
 			for(int i=0;i<totalVar-1;i++)
 				vUp[i] = 0;
-
-
-			
+				
 			while(downNbrRoot != countUpMsg[totalVar-1]){
 
 				for(int i=0;i<totalVar-1;i++){
 					int tempSize = downNbr[i].size();
-					//cout<<tempSize <<" "<<countUpMsg[i]<< " "<<vUp[i]<<"\n"; 
-					//if(tempSize == 1)
-					//	cout<<downNbr[i][0]<<"\n";
 					if(tempSize == countUpMsg[i] && vUp[i]==0){
 						vector<double> tempMsg;
 						vector<int> tempScope;
 						vUp[i] = 1;
 						int j = upNbr[i];
 						countUpMsg[j]++;
-						
-
-
-						
 						up_MSG(i, downNbr[i], cliques, tempScope, scopeOfUpMsg, tempMsg, maxUpMsg, upMsg, values);
 						//cout<<"here3\n";
 						upMsg[i] = tempMsg;
 						scopeOfUpMsg[i] = tempScope;
-						
 					}
 				}
-
-
 			}
-			
-			
-
-
-			
+		
 			vector<int> assignment(totalVar);
 			int vAss[totalVar];
 			vAss[totalVar-1] = 1;
@@ -1991,27 +1738,6 @@ int main(){
 
 			}
 			
-			/*
-			for(int i=0;i<totalVar-1;i++){
-
-
-				int l = upMsg[i].size();
-				
-				class node *tempNode = cliques[i];
-
-				int ll = tempNode->scope.size();
-
-				for(int j=0;j<ll;j++){
-					cout<<tempNode->scope[j]<<" ";
-				}
-				cout<<"\n";
-
-				for(int j=0;j<l;j++)
-					cout<<upMsg[i][j]<<" ";
-
-				cout<<"\n";
-			}
-			*/
 			int maxIndex = 0;
 			double maxValue = exp(finalTable[0]);
 			double z = maxValue;
@@ -2033,8 +1759,6 @@ int main(){
 			num /=z;
 
 			DLL += log(num);
-			//cout<<"\nAssignment :"<<maxIndex <<"\n";
-
 			
 			// assignment to element eliminated in last
 			assignment[totalVar-1] = maxIndex;
@@ -2046,9 +1770,6 @@ int main(){
 				int ll = scopeOfUpMsg[i].size();
 
 				if(ll==0){
-
-					
-
 
 				}else{
 
@@ -2079,8 +1800,6 @@ int main(){
 							s += to_string(in[z]);
 
 						if(s.compare(ss)==0){
-
-							//cout<<maxUpMsg[i][k]<<" ";
 							assignment[i] = maxUpMsg[i][k];
 							break;
 						}
@@ -2097,27 +1816,15 @@ int main(){
 
 
 						}
-
 					}
-
-
-
-
-
 				}
-
-
 			}
-
-
 			for(int i=0;i<totalVar-1;i++){
 
 				double z = 0.0;
 				for(int j=0;j<10;j++){
 
 					z += values[i][j];
-
-
 				}
 
 				double num = values[i][a3[ordering[i]]];
@@ -2127,45 +1834,20 @@ int main(){
 
 			}
 
-
 			int prevcharCount = characterCounter;
 			
 			for(int i=0;i<totalVar;i++){
-
-
 				
-
 					if(a4[ordering[i]] == assignment[i])
 						characterCounter++;
 					totalChar++;
 
-
-				
 			}
 
 			if((characterCounter - prevcharCount) == n2)
 				correctWord++;
 
-
-
-
-			
-
-
 		}
-
-		
-			
-
-					
-			
-			
-
-
-
-
-
-
 			}
 			else{
 		
@@ -2184,10 +1866,7 @@ int main(){
 			q.push(root);
 
 			vEle[totalVar-1] = 1;
-			
-			
-			
-			
+		
 			while(!q.empty()){
 
 				int tempRoot = q.front();
@@ -2206,9 +1885,7 @@ int main(){
 
 
 			}
-			
-
-
+		
 			q.push(root);
 			
 			for(int i=0;i<totalVar;i++)
@@ -2230,17 +1907,10 @@ int main(){
 							q.push(j);
 					}
 				}
-
 			}
-			
-			
-			
 
 			// two-way message passing
 			// upward pass
-
-			
-			
 
 			vector<int> countUpMsg(totalVar,0);
 
@@ -2249,25 +1919,16 @@ int main(){
 			for(int i=0;i<totalVar-1;i++)
 				vUp[i] = 0;
 
-
-			
 			while(downNbrRoot != countUpMsg[totalVar-1]){
 
 				for(int i=0;i<totalVar-1;i++){
 					int tempSize = downNbr[i].size();
-					//cout<<tempSize <<" "<<countUpMsg[i]<< " "<<vUp[i]<<"\n"; 
-					//if(tempSize == 1)
-					//	cout<<downNbr[i][0]<<"\n";
 					if(tempSize == countUpMsg[i] && vUp[i]==0){
 						vector<double> tempMsg;
 						vector<int> tempScope;
 						vUp[i] = 1;
 						int j = upNbr[i];
 						countUpMsg[j]++;
-						
-
-
-						
 						up_MSG(i, downNbr[i], cliques, tempScope, scopeOfUpMsg, tempMsg, maxUpMsg, upMsg, values);
 						//cout<<"here3\n";
 						upMsg[i] = tempMsg;
@@ -2275,13 +1936,7 @@ int main(){
 						
 					}
 				}
-
-
 			}
-			
-			
-
-
 			
 			vector<int> assignment(totalVar);
 			int vAss[totalVar];
@@ -2301,35 +1956,11 @@ int main(){
 				for(int j=0;j<10;j++){
 
 					finalTable[j] += upMsg[downNbr[totalVar-1][i]][j];
-					//cout<<finalTable[j]<<" ";
+					
 				}
-				//cout<<"\n";
-
-
+			
 			}
 			
-			/*
-			for(int i=0;i<totalVar-1;i++){
-
-
-				int l = upMsg[i].size();
-				
-				class node *tempNode = cliques[i];
-
-				int ll = tempNode->scope.size();
-				
-				for(int j=0;j<ll;j++){
-					cout<<tempNode->scope[j]<<" ";
-				}
-				cout<<"\n";
-
-				for(int j=0;j<l;j++)
-					cout<<upMsg[i][j]<<" ";
-
-				cout<<"\n";
-
-			}
-			*/
 			
 			int maxIndex = 0;
 			double maxValue = exp(finalTable[0]);
@@ -2363,11 +1994,6 @@ int main(){
 
 
 			}
-
-
-			//cout<<"\nAssignment :"<<maxIndex <<"\n";
-
-			
 			// assignment to element eliminated in last
 			assignment[totalVar-1] = maxIndex;
 
@@ -2378,10 +2004,6 @@ int main(){
 				int ll = scopeOfUpMsg[i].size();
 
 				if(ll==0){
-
-					
-
-
 				}else{
 
 					for(int j=0;j<ll;j++){
@@ -2397,9 +2019,7 @@ int main(){
 						ss += to_string(assignment[ttemp]);
 
 					}
-
 					
-						
 					vector<int> in(ll);
 					for(int k=0;k<ll;k++)
 						in[k] = 0;
@@ -2427,18 +2047,11 @@ int main(){
 								in[l-1]++;
 								in[l] = 0;
 							}
-
-
 						}
 
 					}
 
-
-
-
-
 				}
-
 
 			}
 
@@ -2473,14 +2086,7 @@ int main(){
 
 				cout<<ordering[i]<<" "<<assignment[i]<<"\n";
 			}
-			//cout<<"\n";
-			//cout<<"Actual : ";
-			//for(int i=0;i<n1;i++)
-			//	cout<<a3[i]<<" ";
-			//for(int i=0;i<n2;i++)
-			//	cout<<a4[i]<<" ";
-
-			//cout<<"\n";
+			
 			int correct3 = 0;
 			int correct4 = 0;
 
@@ -2518,13 +2124,6 @@ int main(){
 			
 
 			int ll = maxUpMsg[2].size();
-
-			//for(int i=0;i<ll;i++)
-			//	cout<<maxUpMsg[2][i]<<"\n";
-					
-			//exit(0);
-			
-
 
 		}
 	}
