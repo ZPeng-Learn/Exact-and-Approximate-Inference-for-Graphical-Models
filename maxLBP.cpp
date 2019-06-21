@@ -18,7 +18,6 @@ int correctChar = 0;
 
 int modelNum;
 
-
 int adjacency[100][100];
 int n1, n2, totalVar;
 map<char,int> mapping;
@@ -34,24 +33,6 @@ vector<vector<double> > transFactor(10,vector<double>(10)); // 10*10 table for e
 //vector<vector<double> > initialVariableFactor(200);
 int vInitial[100];
 int ocrAdded[100];
-//vector<vector<double> > prevmsgForScope1(200);
-//vector<vector<double> > prevmsgForScope2(200);
-//vector<vector<double> > prevmsgFromFactorNode1(200);
-//vector<vector<double> > prevmsgFromFactorNode2(200);
-
-//vector<vector<double> > newmsgForScope1(200);
-//vector<vector<double> > newmsgForScope2(200);
-//vector<vector<double> > newmsgFromFactorNode1(200);
-//vector<vector<double> > newmsgFromFactorNode2(200);
-
-//vector<vector<double> > factorNodeBelief(200);
-//vector<vector<double> > variableNodeBelief(200);
-
-
-//vector<vector<int> > parentNodes(200);
-
-
-
 
 int correctWord = 0;
 
@@ -75,37 +56,26 @@ void initializeMessages(vector<vector<int> > &scopeOfFactorNodes, vector<vector<
 			prevmsgFromFactorNode1[i].push_back(log(1));
 			prevmsgFromFactorNode2[i].push_back(log(1));
 		}
-
-
 	}
-	
 }
  
 void initializeParentNode(int index, vector<vector<int> > &scopeOfFactorNodes, vector<vector<int> > &parentNodes){
-
-
+	
 	int l = scopeOfFactorNodes.size();
 
-	//for(int i=0;i<totalVar;i++)
-	//	parentNodes[i].clear();
-	
 	for(int i=0;i<l;i++){
 
 		if(find(scopeOfFactorNodes[i].begin(),scopeOfFactorNodes[i].end(),index)!=scopeOfFactorNodes[i].end()){
 
 			parentNodes[index].push_back(i);
 		}
-
 	}
 }
 
 void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<double> > &initialFactors, vector<vector<double> > &initialVariableFactor){
 
-
 	int l = scopeOfFactorNodes.size();
 	totalEdges = l * 2;
-
-
 
 	for(int i=0;i<l;i++){
 
@@ -118,19 +88,15 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 			initialFactors[i].push_back(0.0);
 
 		if( scopeOfFactorNodes[i][0] != n1-1 && scopeOfFactorNodes[i][0] == scopeOfFactorNodes[i][1] - 1 ){
-			//if(i==2)
-			//	cout<<"here22\n";
-
+			
 			// trans factor
 			if(flag == 0){
 
 				for(int j=0;j<fSize;j++){
 
 					initialFactors[i][j] = transFactor[factorIndex[j][0]][factorIndex[j][1]];
-
 				}
 			}
-
 		}
 
 		// ocr factor
@@ -156,12 +122,7 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 				initialFactors[i][j] += ocrFactor[imageId][factorIndex[j][0]];
 				//if(i==2)
 				//	cout<<imageId<<"\n";
-
 			}
-
-
-
-
 		}
 
 		// check for skip factor 
@@ -265,11 +226,9 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 					flag = 1;
 					break;
 				}
-
 			}
 			if(flag == 0){
-
-
+				
 				for(int j=0;j<fSize;j++){
 
 
@@ -282,25 +241,14 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 						initialFactors[i][j] += log(1);
 					}
 				}
-
 			}
-
 		}
-
-
-
-
-
-
 	}
-
 	for(int i=0;i<totalVar;i++){
-
-
+		
 		if(ocrAdded[i]==0){
 			//cout<<"OCR Added : "<<i<<"\n";
 			for(int j=0;j<l;j++){
-
 
 				if(scopeOfFactorNodes[j][1]==i){
 
@@ -321,8 +269,6 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 						initialFactors[j][k] += ocrFactor[imageId][factorIndex[k][1]];
 
 					}
-
-
 					break;
 				}
 			}
@@ -339,13 +285,8 @@ void initializeFactors(vector<vector<int> > &scopeOfFactorNodes, vector<vector<d
 			initialVariableFactor[i].push_back(log(1));
 
 		}
-
-
 	}
-
-
 }
-
 
 
 double createFactorBelief(int index, vector<vector<int> > &scopeOfFactorNodes, vector<vector<double> > &factorNodeBelief, vector<vector<double> > &initialFactors, vector<vector<double> > &prevmsgForScope1, vector<vector<double> > &prevmsgForScope2){
@@ -364,8 +305,6 @@ double createFactorBelief(int index, vector<vector<int> > &scopeOfFactorNodes, v
 		factorNodeBelief[index][i] = 0.0;
 		factorNodeBelief[index][i] += prevmsgForScope1[index][factorIndex[i][0]];
 		factorNodeBelief[index][i] += prevmsgForScope2[index][factorIndex[i][1]];
-		//cout<<prevmsgForScope1[index][factorIndex[i][0]]<<" "<<prevmsgForScope1[index][factorIndex[i][1]]<<"\n";
-		//cout<<factorNodeBelief[index][i]<<"\n";
 		factorNodeBelief[index][i] += initialFactors[index][i];
 
 		temp = abs(temp-exp(factorNodeBelief[index][i]));
@@ -373,8 +312,6 @@ double createFactorBelief(int index, vector<vector<int> > &scopeOfFactorNodes, v
 			max1 = temp;
 
 	}
-
-
 	return max1;
 }
 
@@ -392,8 +329,6 @@ double createVariableBelief(int index, vector<vector<double> > &variableNodeBeli
 		variableNodeBelief[index][i] = 0.0;
 
 	}
-
-
 
 	for(int i=0;i<l;i++){
 
@@ -413,11 +348,7 @@ double createVariableBelief(int index, vector<vector<double> > &variableNodeBeli
 
 				variableNodeBelief[index][j] += prevmsgFromFactorNode2[i][j];
 			}
-
-
 		}
-
-
 	}
 
 	double max1 = 0.0;
@@ -426,13 +357,8 @@ double createVariableBelief(int index, vector<vector<double> > &variableNodeBeli
 		if(max1 < abs(tempFactor[i]-exp(variableNodeBelief[index][i])))
 			max1 = abs(tempFactor[i]-exp(variableNodeBelief[index][i]));
 
-
 	}
-
-
 return max1;
-
-
 }
 
 
@@ -496,17 +422,7 @@ int main(){
 		}
 
 	}
-	/*
-	for(int i=0;i<10;i++){
 
-		for(int j=0;j<10;j++){
-
-			cout<<transFactor[i][j]<<" ";
-		}
-		cout<<"\n";
-	}
-	//exit(0);
-	*/
 	// Insert OCR factor Node 10*1 because Image Id is fixed
 	int r=0, in=0;
 
@@ -534,7 +450,6 @@ int main(){
 			}
 		}
 	}
-
 
 	vector<int> genIndex(2);
 	genIndex[0] = 0;
@@ -741,19 +656,9 @@ while(!file.eof()){
 		for(int i=0;i<totalVar;i++)
 			ocrAdded[i] = 0;
 		
-
-
-	
-		
-
 		initializeMessages(scopeOfFactorNodes, prevmsgForScope1, prevmsgForScope2, prevmsgFromFactorNode1, prevmsgFromFactorNode2);
 		
-		
-
-
 		initializeFactors(scopeOfFactorNodes, initialFactors, initialVariableFactor);
-
-		//exit(0);
 
 
 		if(modelNum == 1){
@@ -850,16 +755,8 @@ while(!file.eof()){
 
 
 			getline(fileTruth,temp);
-
-
-			
-
 			
 			getline(file,temp);
-
-
-
-
 
 		}else{
 
@@ -888,72 +785,7 @@ while(!file.eof()){
 			initializeParentNode(i, scopeOfFactorNodes, parentNodes);
 		}
 
-		/*
-		for(int i=0;i<l;i++){
-
-			int k = initialFactors[i].size();
-			for(int j=0;j<k;j++)
-				cout<<initialFactors[i][j]<<" ";
-			cout<<"\n\n\n\n";
-
-		}
-		*/
-		//exit(0);
 		
-
-		/*
-		for(int i=0;i<l;i++){
-
-				for(int j=0;j<100;j++){
-
-					cout<<factorNodeBelief[i][j]<<"\n";
-				}
-				cout<<"\n\n\n\n";
-		}
-
-
-		cout<<"AFTER :";
-		
-		
-		for(int i=0;i<totalVar;i++){
-
-
-			for(int j=0;j<10;j++){
-
-				cout<<variableNodeBelief[i][j]<<" ";
-			}
-			cout<<"\n\n\n\n";
-
-		}
-		*/
-		
-		/*
-		cout<<"start\n";
-		for(int i=0;i<l;i++){
-
-			for(int j=0;j<100;j++){
-
-				cout<<factorNodeBelief[i][j]<<" ";
-			}
-			cout<<"\n\n\n\n";
-		}
-
-		cout<<" herehee\n";
-		
-		*/
-		/*
-		cout<<"Initial"<<ccounter<<"\n";
-		for(int i=0;i<l;i++){
-
-			for(int j=0;j<100;j++){
-
-				cout<<initialFactors[i][j]<<" ";
-			}
-			cout<<"\n\n\n\n";
-		}
-		
-		//exit(0);
-		*/
 		t= 0;
 		while(true){
 
@@ -1055,13 +887,8 @@ while(!file.eof()){
 				newmsgFromFactorNode2[i] = tempMsg;
 				tempMsg.clear();
 				valueToSubtract.clear();
-
-				
-				
+	
 			}
-
-
-			
 			for(int i=0;i<totalVar;i++){	
 
 				int parentSize = parentNodes[i].size();
@@ -1078,23 +905,13 @@ while(!file.eof()){
 							
 						}
 
-						
-						
 						tempBelief = variableNodeBelief[i];
 
 						for(int j=0;j<msgSize;j++){
 
 							tempBelief[j] -= valueToSubtract[to_string(j)]; 
-							//cout<<tempBelief[j]<<" ";
-
 						}
-
-						//cout<<"\n\n";
-
 						
-						
-
-
 						newmsgForScope1[parentNodes[i][j]] = tempBelief;
 						tempBelief.clear();
 						valueToSubtract.clear();
@@ -1102,14 +919,10 @@ while(!file.eof()){
 
 					}else if(scopeOfFactorNodes[parentNodes[i][j]][1] == i){
 						// update msgForScope2
-
-
-
+						
 						for(int k=0;k<msgSize;k++){
 
 							valueToSubtract[to_string(k)] = prevmsgFromFactorNode2[parentNodes[i][j]][k];
-							
-							
 						}
 
 						
@@ -1122,25 +935,15 @@ while(!file.eof()){
 							//cout<<tempBelief[j]<<" ";
 
 						}
-						//cout<<"\n\n";
-
 						
-						
-
-
 						newmsgForScope2[parentNodes[i][j]] = tempBelief;
 						tempBelief.clear();
 						valueToSubtract.clear();
-
-
-
 					}
 
 				}
 
 			}
-
-
 			for(int i=0;i<l;i++){
 
 
@@ -1177,128 +980,12 @@ while(!file.eof()){
 					maxDiff = max2;
 			}
 
-			/*
-			//for(int i=0;i<l;i++){
-			cout<<t<<"\n";
-				for(int j=0;j<100;j++){
-
-					cout<<factorNodeBelief[1][j]<<" "<<ttemp[j]<<" "<<abs(factorNodeBelief[2][j]-ttemp[j])<<"\n";
-				}
-				cout<<"\n\n\n\n";
-			//}
-
-			cout<<"\n\n\n";	
-			*/
-			/*
-			cout<<"\n\n\n";
-			for(int j=0;j<100;j++){
-
-				cout<<factorNodeBelief[2][j]<<"\n";
-			}*/
-
 			t = t + 1;
-
-			//cout<<t<<" "<<maxDiff<<"\n";
 			
 			if(maxDiff < 0.0001  )
 				break;
 				
 		}
-
-		//cout<<t<<"\n";
-
-		/*
-		for(int i=0;i<l;i++){
-
-				for(int j=0;j<100;j++){
-
-					cout<<factorNodeBelief[i][j]<<"\n";
-				}
-				cout<<"\n\n\n\n";
-			}
-		*/	
-		/*
-		l = scopeOfFactorNodes.size();
-
-		for(int i=0;i<l;i++){
-
-			for(int j=0;j<100;j++){
-
-				cout<<factorNodeBelief[i][j]<<"\n";
-			}
-			cout<<"\n\n\n\n";
-		}*/
-
-		//*
-		/*
-		for(int i=0;i<totalVar;i++){
-
-
-			for(int j=0;j<10;j++){
-
-				cout<<variableNodeBelief[i][j]<<" ";
-			}
-			cout<<"\n\n\n\n";
-
-		}
-		*/
-		//*/
-		/*
-		
-		l = scopeOfFactorNodes.size();
-		//for(int i=0;i<l;i++){
-			cout<<"hello\n";
-			for(int j=0;j<10;j++){
-
-				cout<<prevmsgFromFactorNode1[0][j]<<" ";
-			}
-			cout<<"\n";
-
-			for(int j=0;j<10;j++){
-
-				cout<<prevmsgFromFactorNode1[1][j]<<" ";
-			}
-			cout<<"\n";
-
-			for(int j=0;j<10;j++){
-
-				cout<<prevmsgFromFactorNode1[2][j]<<" ";
-			}
-			cout<<"\n";
-			
-
-			for(int j=0;j<10;j++){
-
-				cout<<prevmsgForScope1[i][j]<<" ";
-			}
-			cout<<"\n";
-
-			for(int j=0;j<10;j++){
-
-				cout<<prevmsgForScope2[i][j]<<" ";
-			}
-			cout<<"\n";
-			
-		
-			cout<<"\n\n\n\n\n\n";
-			*/
-
-		//}
-		
-		
-		//*
-		/*
-		for(int i=0;i<totalVar;i++){
-
-			for(int j=0;j<10;j++){
-
-				cout<<variableNodeBelief[i][j]<<" ";
-			}
-			cout<<"\n";
-		}
-		*/
-		
-		//*/
 		
 		vector<int> assignment(totalVar);
 		for(int i=0;i<totalVar;i++){
