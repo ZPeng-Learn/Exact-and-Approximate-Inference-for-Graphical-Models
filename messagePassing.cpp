@@ -24,15 +24,6 @@ vector<int> tempScope;
 
 int modelNum;
 
-//vector<vector<double> > upMsg(20);
-//vector<vector<double> > downMsg(20);
-//vector<vector<int> > scopeOfUpMsg(20);
-//vector<vector<double> > beliefOfCliqueNodes(20);
-
-
-
-//vector<int> upNbr(20,-1);
-//vector<vector<int> > downNbr(20);
 
 int totalWord= 0;;
 
@@ -51,23 +42,7 @@ public:
 
 };
 
-
-
-//map<int, class node *> cliques;
-//vector<vector<int> > scopeOfNewFactor;
-//vector<int> visitedNewFactor;
-//vector<int> sourceNewFactor;
-//int cliqueAdjacency[100][100];
-
-
-
-
-
-
 void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vector<int> &tempScope, vector<vector<int> > &scopeOfUpMsg, vector<double> &tempMsg, vector<vector<double> > &upMsg){
-
-
-
 
 	class node *tempNode = cliques[index];
 	
@@ -83,14 +58,8 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 	vector<double > tempFactor;
 
 	tempFactor = tempNode->factor;
-	
-
-
 
 	int ll = tempFactor.size();
-
-
-
 	
 	map<string,double> mapping1;
 	
@@ -126,8 +95,6 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 					in[l-1]++;
 					in[l] = 0;
 				}
-
-
 			}
 
 		}
@@ -137,8 +104,7 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 		for(int l=0;l<l1;l++){
 
 			for(int z=0;z<scopeSize;z++){
-				//cout<<"imp\n";
-				//cout<<scopeOfUpMsg[child[i]][l]<<" "<<tempNode->scope[z]<<"\n";
+				
 				if(scopeOfUpMsg[child[i]][l] == tempNode->scope[z]){
 					order.push_back(z);
 					break;
@@ -146,8 +112,6 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 			}
 		}
 
-
-		//cout<<index<<"\n";
 		for(int l=0;l<fSize;l++){
 
 			string tempString = "";
@@ -156,13 +120,9 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 				tempString += to_string(tempNode->factorIndex[l][order[z]]);
 			}
 
-			
 			tempFactor[l] += mapping1[tempString];
 			
 		}
-		
-
-		
 
 	}
 
@@ -178,35 +138,18 @@ void up_MSG(int index, vector<int>& child, map<int, class node * > &cliques, vec
 			
 		}
 		tempValue = log(tempValue);
-		
-
 		tempMsg.push_back(tempValue);
 
 	}
-
-
-
-
-
 }
-
 
 
 void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> > &scopeOfUpMsg, vector<int> &upNbr, vector<vector<double> > &downMsg, vector<double> &tempMsg, vector<vector<int> > &downNbr, vector<vector<double> > &upMsg, vector<vector<double> > &beliefOfCliqueNodes){
 
-	
-
 	class node *tempNode = cliques[index];
-	
-
 	tempMsg = tempNode->factor;
 
-	
-
-
 	int tempSize = scopeOfUpMsg[index].size();
-
-	
 
 	map<string,double> mapping1;
 
@@ -219,58 +162,38 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 	vector<double> tempFactor;
 
 
-	
-
 	if(upNbr[index]!=-1){
 	
 	tempFactor  = downMsg[index];
-	
-	
-
-
-	
-
-
 	
 	vector<int> in(tempSize);
 
 	for(int k=0;k<tempSize;k++)
 		in[k] = 0;
-	//cout<<newTableSize<<" "<<tempSize<<" "<<in[0]<<"\n";
 
 	for(int k=0;k<newTableSize;k++){
 
 		string s = "";
 		for(int z=0;z<tempSize;z++)
 			s += to_string(in[z]);
-		//cout<<"S :"<<s<<" "<<tempFactor[k]<<"\n";
+		
 		mapping1[s] = tempFactor[k];
 
 		in[tempSize-1]++;
 
-		//cout<<"here2\n";
 		for(int l=tempSize-1;l>0;l--){
 
 			if(in[l]==10){
 				in[l-1]++;
 				in[l] = 0;
 			}
-
-
 		}
-
 	}
-	
-
-
 	
 	for(int i=0;i<newTableSize && index == 7;i++)
 		cout<<tempFactor[i]<<"\n";
 	
 	vector<int> order;
-
-	
-
 	for(int i=0;i<tempSize;i++){
 		for(int j=0;j<scopeSize;j++){
 
@@ -282,10 +205,6 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 		}
 
 	}
-
-	
-
-
 	for(int l=0;l<fSize;l++){
 
 			string tempString = "";
@@ -293,8 +212,7 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 				
 				tempString += to_string(tempNode->factorIndex[l][order[z]]);
 			}
-
-
+		
 			tempMsg[l] += mapping1[tempString];
 
 	}
@@ -342,9 +260,6 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 		}
 
 		vector<int> order;
-
-		
-
 		for(int k=0;k<tempSize;k++){
 			for(int j=0;j<scopeSize;j++){
 
@@ -357,9 +272,6 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 
 		}
 
-		
-
-
 		for(int l=0;l<fSize;l++){
 
 				string tempString = "";
@@ -367,27 +279,13 @@ void createBelief(int index, map<int, class node*> &cliques, vector<vector<int> 
 					
 					tempString += to_string(tempNode->factorIndex[l][order[z]]);
 				}
-
-
 				tempMsg[l] += mapping1[tempString];
 
 		}
 
-
 		mapping1.clear();
-
-
-	
 	}
-	
-
 	beliefOfCliqueNodes[index] = tempMsg;
-
-
-
-
-
-
 
 }
 
@@ -437,16 +335,12 @@ int main(){
 
 	// modelNum = 1 OCR, 2 = OCR + trans, 3 = OCR+trans+skip, 4 = complete
 
-
-
 	file.open("../OCRdataset-2/data/data-loops.dat");
 	fileOCR.open("../OCRdataset-2/potentials/ocr.dat");
 	fileTrans.open("../OCRdataset-2/potentials/trans.dat");
 	fileTruth.open("../OCRdataset-2/data/truth-loops.dat");
 
 	int totalChar = 0;
-
-
 
 	// mapping of character to index
 	mapping['d'] = 0;
@@ -573,19 +467,12 @@ int main(){
 			
 		}
 
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
-		//getline(file,temp);getline(file,temp);getline(file,temp);
+		
 		getline(file,temp);
 		
 		if(temp[0]=='\0')
 			break;
 		strcpy(temp1, temp.c_str());
-		
-		//cout<<temp<<"\n";
-
-		
 		c = strtok(temp1,"\t");
 		while(c!=NULL){
 
@@ -595,18 +482,12 @@ int main(){
 			
 
 		}
-		//cout<<"here\n";
-
-
+		
 		for(int i=0;i<totalVar;i++)
 			transAdded[i] = 0;
 
 		getline(file,temp);
-
-
 		strcpy(temp1, temp.c_str());
-
-		//cout<<temp<<"\n";
 
 		c = strtok(temp1,"\t");
 		while(c!=NULL){
@@ -622,11 +503,6 @@ int main(){
 		getline(fileTruth,temp);
 		
 		totalVar = n1 + n2;
-
-
-
-
-		
 		for(int i=0;i<n1+n2;i++){
 
 			for(int j=0;j<n1+n2;j++){
@@ -898,8 +774,6 @@ int main(){
 						in[l-1]++;
 						in[l] = 0;
 					}
-
-
 				}
 
 			}
@@ -909,17 +783,11 @@ int main(){
 				//cout<<ocrFactor[imageId][temp3->factorIndex[k][0]]<<"\n";
 				temp3->factor.push_back(ocrFactor[imageId][temp3->factorIndex[k][0]]);
 				//cout<<imageId<<" "<<temp3->factorIndex[k][0]<<" "<<exp(ocrFactor[imageId][temp3->factorIndex[k][0]])<<"\n";
-				
-
 
 			}
-			
-
 
 			// updating transFactor
 
-			
-			//cout<<"here2 "<<i<<"\n";
 			if(modelNum!=1){
 			
 				int tempTrans = -1;
@@ -969,12 +837,7 @@ int main(){
 				}
 			}
 
-					
-				//exit(0);
-
 			
-			
-			//cout<<"hhhh\n";
 			// updating skip factor and word-skip
 
 			if(ordering[i]<n1){
@@ -1048,7 +911,6 @@ int main(){
 
 						}
 
-
 					}
 				}
 
@@ -1057,7 +919,6 @@ int main(){
 
 				// updating skip
 
-				//cout<<"hhhh\n";
 				int tempImg1 = a2[ordering[i] - n1];
 
 				if(modelNum!=1 && modelNum!=2){
@@ -1131,25 +992,11 @@ int main(){
 
 					}
 				}
-
-
-
-			
-
-
-
-
-
-
 			}
-
 			
 			cliques[i] = temp3;
 			
 		}
-
-
-
 
 		if(modelNum == 1){
 
@@ -1180,14 +1027,7 @@ int main(){
 				num = num/z;
 
 				DLL += log(num);
-
-				
-
-
 				assignment[ordering[i]] = maxIndex;
-
-				
-
 
 			}
 
@@ -1214,16 +1054,9 @@ int main(){
 			if((characterCounter - prevcharCount) == n2)
 				correctWord++;
 
-
-
-
-
 		}else if(modelNum == 2 || modelNum == 3){
-
-
 		int root = n1 - 1;
-		//vector<int> upNbr(totalVar,-1);
-		//vector<vector<int> > downNbr(totalVar);
+		
 		totalVar = n1;
 
 		for(int j=0;j<totalVar;j++)
@@ -1238,10 +1071,7 @@ int main(){
 		q.push(root);
 
 		vEle[totalVar-1] = 1;
-		
-		
-		
-		
+	
 		while(!q.empty()){
 
 			int tempRoot = q.front();
@@ -1260,9 +1090,6 @@ int main(){
 
 
 		}
-
-
-
 		root = totalVar-1;
 
 
@@ -1271,9 +1098,6 @@ int main(){
 		for(int i=0;i<totalVar;i++)
 			vEle[i] = 0;
 		vEle[root] = 1;
-
-		
-
 		while(!q.empty()){
 
 			int tempRoot = q.front();
@@ -1289,19 +1113,8 @@ int main(){
 			}
 
 		}
-
-		
-		
-		
-
-		
-
 		// two-way message passing
 		// upward pass
-
-		
-		
-
 		vector<int> countUpMsg(totalVar,0);
 
 		int downNbrRoot = downNbr[totalVar-1].size();
@@ -1309,25 +1122,18 @@ int main(){
 		for(int i=0;i<totalVar-1;i++)
 			vUp[i] = 0;
 
-
-		
 		while(downNbrRoot != countUpMsg[totalVar-1]){
 
 			for(int i=0;i<totalVar-1;i++){
 				int tempSize = downNbr[i].size();
-				//cout<<tempSize <<" "<<countUpMsg[i]<< " "<<vUp[i]<<"\n"; 
-				//if(tempSize == 1)
-				//	cout<<downNbr[i][0]<<"\n";
+				
 				if(tempSize == countUpMsg[i] && vUp[i]==0){
 					vector<double> tempMsg;
 					vector<int> tempScope;
 					vUp[i] = 1;
 					int j = upNbr[i];
 					countUpMsg[j]++;
-					
-
-
-					
+			
 					up_MSG(i, downNbr[i], cliques, tempScope, scopeOfUpMsg, tempMsg, upMsg);
 					//cout<<"here3\n";
 					upMsg[i] = tempMsg;
@@ -1338,11 +1144,6 @@ int main(){
 
 
 		}
-
-		
-		
-
-	
 
 		int upMsgPresent[totalVar][totalVar];
 		int downMsgPresent[totalVar][totalVar];
@@ -1366,7 +1167,6 @@ int main(){
 
 			}
 		}
-		
 		
 		
 		int vDown[totalVar];
@@ -1397,10 +1197,6 @@ int main(){
 
 
 					createBelief(i, cliques, scopeOfUpMsg, upNbr, downMsg, tempMsg, downNbr, upMsg, beliefOfCliqueNodes);
-
-					
-					
-
 					for(int j=0;j<tempDownNbrSize;j++){
 
 						// send msg to down nbr j
@@ -1435,15 +1231,10 @@ int main(){
 									in[l-1]++;
 									in[l] = 0;
 								}
-
-
 							}
-
 						}
 
 						vector<int> order;
-
-						
 
 						for(int k=0;k<tempSize;k++){
 							for(int j1=0;j1<scopeSize;j1++){
@@ -1456,9 +1247,6 @@ int main(){
 							}
 
 						}
-
-						
-
 
 						for(int l=0;l<fSize;l++){
 
@@ -1473,11 +1261,7 @@ int main(){
 								
 						}
 						
-
-
 						mapping.clear();
-
-
 
 						for(int k=0;k<tempSize;k++)
 							in[k] = 0;
@@ -1499,14 +1283,9 @@ int main(){
 									in[l-1]++;
 									in[l] = 0;
 								}
-
-
 							}
 
 						}
-						
-
-
 
 						for(int l=0;l<fSize;l++){
 
@@ -1515,9 +1294,6 @@ int main(){
 									
 									tempString += to_string(tempNode->factorIndex[l][order[z]]);
 								}
-
-								
-								
 								mapping[tempString] += exp(beliefFactor[l]);
 
 
@@ -1533,9 +1309,6 @@ int main(){
 							for(int z=0;z<tempSize;z++)
 								s += to_string(in[z]);
 
-							
-
-
 							downFactor[k] = log(mapping[s]);
 							
 
@@ -1547,8 +1320,6 @@ int main(){
 									in[l-1]++;
 									in[l] = 0;
 								}
-
-
 							}
 
 						}
@@ -1558,40 +1329,13 @@ int main(){
 						downMsg[downNbr[i][j]] = downFactor;
 
 						downFactor.clear();
-
-
-						
-
 					}
 
 				
 				}
-			
-
+		
 			}
-			
-
-
 		}
-
-
-		//cout<<vDown[0]<<"\n";
-		/*
-		for(int i=0;i<totalVar;i++){
-
-
-			int fSize = cliques[i]->factorSize;
-			//cout<<fSize<<"\n";
-			vector<double> factor = beliefOfCliqueNodes[i];
-			//cout<<factor.size()<<"\n";
-			for(int j=0;j<fSize;j++){
-
-				cout<<factor[j]<<"\n";
-			}
-
-			cout<<"\n\n\n";
-		}
-		*/
 		int assignment[10];
 
 
@@ -1699,15 +1443,7 @@ int main(){
 
 		if((characterCounter - prevcharCount) == n1)
 				correctWord++;
-
-
-		//cout<<"\n";
-
-
-
 		// do for second word
-
-
 		// change adjancency list
 
 		if(n2 > 0){
@@ -1803,20 +1539,7 @@ int main(){
 				}
 			}
 		}
-		//*
-		/*
-		cout<<"Adjacency Matrix : \n";
-
-		for(int i=0;i<totalVar;i++){
-			for(int j=0;j<totalVar;j++){
-
-				cout<<adjacency[i][j]<<" ";
-			}
-			cout<<"\n";
-		}
-
-		cout<<"END\n\n";
-		//*/
+		
 		
 		for(int i=0;i<totalVar;i++)
 			for(int j=0;j<totalVar;j++)
@@ -1908,12 +1631,7 @@ int main(){
 					p.push_back(j);
 
 			}
-			/*
-			for(int l=0;l<p.size();l++){
-				cout<<p[l]<<" ";
-			}
-			cout<<"\n";
-			*/
+			
 			// check for factors which are created newly
 			newFSize = scopeOfNewFactor.size();
 			//cout<<newFSize<<" "<<i<<"\n";
@@ -1936,18 +1654,13 @@ int main(){
 						}
 
 						visitedNewFactor[k] = 1;	// removing that factor
-						//cout<<"ADD Edge :\n";
-						//cout<<i<<" "<<sourceNewFactor[k]<<" "<<k<<"\n";
 						cliqueAdjacency[i][sourceNewFactor[k]] = 1;	// adding edges in clique tree
 						cliqueAdjacency[sourceNewFactor[k]][i] = 1;
 					}
 				}
 			}
 
-
 			pSize = p.size();
-
-
 			if(pSize != 0){
 
 				// a new msg created
@@ -2007,12 +1720,7 @@ int main(){
 				temp3->factor.push_back(ocrFactor[imageId][temp3->factorIndex[k][0]]);
 				//cout<<imageId<<" "<<temp3->factorIndex[k][0]<<" "<<exp(ocrFactor[imageId][temp3->factorIndex[k][0]])<<"\n";
 				
-
-
 			}
-			
-
-
 			// updating transFactor
 
 			
@@ -2066,12 +1774,7 @@ int main(){
 				}
 			}
 
-					
-				//exit(0);
-
-			
-			
-			//cout<<"hhhh\n";
+		
 			// updating skip factor and word-skip
 
 			
@@ -2157,16 +1860,6 @@ int main(){
 			
 		}
 
-
-
-
-
-
-		
-		
-
-		//vector<int> upNbr(totalVar,-1);
-		//vector<vector<int> > downNbr(totalVar);
 		totalVar = n2;
 
 		int root = totalVar-1;
@@ -2184,10 +1877,6 @@ int main(){
 		q.push(root);
 
 		vEle[totalVar-1] = 1;
-		
-		
-		//for(int i=0;i<upNbr.size();i++)
-		//	cout<<upNbr[i]<<"\n";
 		
 		while(!q.empty()){
 
@@ -2237,17 +1926,8 @@ int main(){
 
 		}
 
-		
-		
-		
-
-		
-
 		// two-way message passing
 		// upward pass
-
-		
-		
 
 		vector<int> countUpMsg(totalVar,0);
 
@@ -2262,19 +1942,14 @@ int main(){
 
 			for(int i=0;i<totalVar-1;i++){
 				int tempSize = downNbr[i].size();
-				//cout<<tempSize <<" "<<countUpMsg[i]<< " "<<vUp[i]<<"\n"; 
-				//if(tempSize == 1)
-				//	cout<<downNbr[i][0]<<"\n";
+			
 				if(tempSize == countUpMsg[i] && vUp[i]==0){
 					vector<double> tempMsg;
 					vector<int> tempScope;
 					vUp[i] = 1;
 					int j = upNbr[i];
 					countUpMsg[j]++;
-					
-
-
-					
+				
 					up_MSG(i, downNbr[i], cliques, tempScope, scopeOfUpMsg, tempMsg, upMsg);
 					//cout<<"here3\n";
 					upMsg[i] = tempMsg;
@@ -2285,11 +1960,6 @@ int main(){
 
 
 		}
-
-		
-		
-
-	
 
 		int upMsgPresent[totalVar][totalVar];
 		int downMsgPresent[totalVar][totalVar];
@@ -2344,9 +2014,6 @@ int main(){
 
 
 					createBelief(i, cliques, scopeOfUpMsg, upNbr, downMsg, tempMsg, downNbr, upMsg, beliefOfCliqueNodes);
-
-					
-					
 
 					for(int j=0;j<tempDownNbrSize;j++){
 
@@ -2404,9 +2071,6 @@ int main(){
 
 						}
 
-						
-
-
 						for(int l=0;l<fSize;l++){
 
 								string tempString = "";
@@ -2419,12 +2083,8 @@ int main(){
 								beliefFactor[l] -= mapping[tempString];
 								
 						}
-						
-
-
+					
 						mapping.clear();
-
-
 
 						for(int k=0;k<tempSize;k++)
 							in[k] = 0;
@@ -2453,8 +2113,6 @@ int main(){
 						}
 						
 
-
-
 						for(int l=0;l<fSize;l++){
 
 								string tempString = "";
@@ -2462,11 +2120,8 @@ int main(){
 									
 									tempString += to_string(tempNode->factorIndex[l][order[z]]);
 								}
-
-								
 								
 								mapping[tempString] += exp(beliefFactor[l]);
-
 
 						}
 
@@ -2480,9 +2135,6 @@ int main(){
 							for(int z=0;z<tempSize;z++)
 								s += to_string(in[z]);
 
-							
-
-
 							downFactor[k] = log(mapping[s]);
 							
 
@@ -2494,8 +2146,6 @@ int main(){
 									in[l-1]++;
 									in[l] = 0;
 								}
-
-
 							}
 
 						}
@@ -2505,42 +2155,12 @@ int main(){
 						downMsg[downNbr[i][j]] = downFactor;
 
 						downFactor.clear();
-
-
-						
-
-					}
-
-				
+					}		
 				}
-			
-
 			}
-			
-
-
 		}
 
 
-		//cout<<vDown[0]<<"\n";
-		/*
-		for(int i=0;i<totalVar;i++){
-
-
-			int fSize = cliques[i]->factorSize;
-			//cout<<fSize<<"\n";
-			vector<double> factor = beliefOfCliqueNodes[i];
-			//cout<<factor.size()<<"\n";
-			for(int j=0;j<fSize;j++){
-
-				cout<<factor[j]<<"\n";
-			}
-
-			cout<<"\n\n\n";
-
-		}
-		*/
-		
 		int assignment[10];
 
 
@@ -2642,12 +2262,6 @@ int main(){
 		if((characterCounter - prevcharCount) == n2)
 				correctWord++;
 
-
-
-		//cout<<"\n";
-		
-
-
 	}
 		
 
@@ -2655,41 +2269,6 @@ int main(){
 
 		}
 		else{
-
-		/*
-
-		if(ccounter==2){
-		
-		for(int i=0;i<totalVar;i++){
-
-			class node *tempNode = cliques[i];
-
-			// print scope 
-
-			int scopeSize = tempNode->scope.size();
-
-			for(int i=0;i<scopeSize;i++)
-				cout<<tempNode->scope[i]<<"   ";
-
-			cout<<"\n\n";
-
-			// print factor
-			int sizeFactor = tempNode->factor.size();
-
-			for(int i=0;i<sizeFactor;i++){
-				cout<<tempNode->factor[i]<<"    ";
-			}
-			cout<<"\n\n\n\n\n\n";
-
-		}
-
-
-		exit(0);
-	}
-		*/
-		
-
-
 
 		for(int i=0;i<totalVar;i++){
 
@@ -2732,9 +2311,7 @@ int main(){
 
 		vEle[totalVar-1] = 1;
 		
-		
-		
-		
+	
 		while(!q.empty()){
 
 			int tempRoot = q.front();
@@ -2754,18 +2331,12 @@ int main(){
 
 		}
 
-
-
 		root = totalVar-1;
-
-
 		q.push(root);
 		
 		for(int i=0;i<totalVar;i++)
 			vEle[i] = 0;
 		vEle[root] = 1;
-
-		
 
 		while(!q.empty()){
 
@@ -2783,17 +2354,7 @@ int main(){
 
 		}
 
-		
-		
-		
-
-		
-
 		// two-way message passing
-		// upward pass
-
-		
-		
 
 		vector<int> countUpMsg(totalVar,0);
 
@@ -2808,9 +2369,7 @@ int main(){
 
 			for(int i=0;i<totalVar-1;i++){
 				int tempSize = downNbr[i].size();
-				//cout<<tempSize <<" "<<countUpMsg[i]<< " "<<vUp[i]<<"\n"; 
-				//if(tempSize == 1)
-				//	cout<<downNbr[i][0]<<"\n";
+				
 				if(tempSize == countUpMsg[i] && vUp[i]==0){
 					vector<double> tempMsg;
 					vector<int> tempScope;
@@ -2832,11 +2391,6 @@ int main(){
 
 		}
 
-		
-		
-
-	
-
 		int upMsgPresent[totalVar][totalVar];
 		int downMsgPresent[totalVar][totalVar];
 		int countDownMsg = 0;
@@ -2855,8 +2409,6 @@ int main(){
 					countDownMsg++;
 
 				}
-
-
 			}
 		}
 		
@@ -2890,9 +2442,6 @@ int main(){
 
 
 					createBelief(i, cliques, scopeOfUpMsg, upNbr, downMsg, tempMsg, downNbr, upMsg, beliefOfCliqueNodes);
-
-					
-					
 
 					for(int j=0;j<tempDownNbrSize;j++){
 
@@ -2950,9 +2499,6 @@ int main(){
 
 						}
 
-						
-
-
 						for(int l=0;l<fSize;l++){
 
 								string tempString = "";
@@ -2965,12 +2511,8 @@ int main(){
 								beliefFactor[l] -= mapping[tempString];
 								
 						}
-						
-
-
+					
 						mapping.clear();
-
-
 
 						for(int k=0;k<tempSize;k++)
 							in[k] = 0;
@@ -2997,9 +2539,7 @@ int main(){
 							}
 
 						}
-						
-
-
+					
 
 						for(int l=0;l<fSize;l++){
 
@@ -3009,10 +2549,7 @@ int main(){
 									tempString += to_string(tempNode->factorIndex[l][order[z]]);
 								}
 
-								
-								
 								mapping[tempString] += exp(beliefFactor[l]);
-
 
 						}
 
@@ -3026,9 +2563,6 @@ int main(){
 							for(int z=0;z<tempSize;z++)
 								s += to_string(in[z]);
 
-							
-
-
 							downFactor[k] = log(mapping[s]);
 							
 
@@ -3040,8 +2574,6 @@ int main(){
 									in[l-1]++;
 									in[l] = 0;
 								}
-
-
 							}
 
 						}
@@ -3052,39 +2584,14 @@ int main(){
 
 						downFactor.clear();
 
-
-						
-
 					}
 
-				
 				}
-			
 
 			}
-			
-
-
+		
 		}
 
-
-		//cout<<vDown[0]<<"\n";
-		/*
-		for(int i=0;i<totalVar;i++){
-
-
-			int fSize = cliques[i]->factorSize;
-			//cout<<fSize<<"\n";
-			vector<double> factor = beliefOfCliqueNodes[i];
-			//cout<<factor.size()<<"\n";
-			for(int j=0;j<fSize;j++){
-
-				cout<<factor[j]<<"\n";
-			}
-
-			cout<<"\n\n\n";
-		}
-		*/
 		int assignment[10];
 
 
@@ -3212,8 +2719,6 @@ int main(){
 
 
 
-		//cout<<"\n";
-
 		}
 
 		
@@ -3227,6 +2732,4 @@ int main(){
 	value = DLL/double(2* ccounter);
 	cout<<value<<"\n";
 
-
-	
 }
